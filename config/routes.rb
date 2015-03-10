@@ -1,13 +1,11 @@
 Rails.application.routes.draw do
 
-  get 'user_sessions/new'
+  root 'todo_lists#index'
 
-  get 'user_sessions/create'
 
   resources :users
 
-  root 'todo_lists#index'
-
+  resources :user_sessions, only: [:new, :create]
 
   resources :todo_lists do
     resources :todo_items do
