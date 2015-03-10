@@ -1,7 +1,11 @@
 require 'spec_helper'
 
 describe TodoList do
-	it{should have_many(:todo_items)}
+
+	context 'relationships' do
+		it{should belong_to(:user)}
+		it{should have_many(:todo_items)}
+	end 
 
 
 	describe '#has_complete_items?' do
