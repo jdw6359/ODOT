@@ -37,6 +37,15 @@ describe UserSessionsController do
         expect(user).to receive(:authenticate)
         post :create, email: "user@user.com", password: "password"
       end 
+
+      it 'sets the user_id in the session' do
+
+        post :create, email: "user@user.com", password: "password"
+        expect(session[:user_id]).to eq(user.id)
+
+
+      end 
+
     end
   end
 end
