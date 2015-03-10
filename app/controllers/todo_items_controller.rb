@@ -59,14 +59,13 @@ class TodoItemsController < ApplicationController
 
 
 
-
   def url_options
     {todo_list_id: params[:todo_list_id]}.merge(super)
   end 
 
   private
   def find_todo_list
-    @todo_list=TodoList.find(params[:todo_list_id])
+    @todo_list=current_user.todo_lists.find(params[:todo_list_id])
   end 
 
   private 

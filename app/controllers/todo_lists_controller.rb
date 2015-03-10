@@ -1,12 +1,11 @@
 class TodoListsController < ApplicationController
-  
   before_action :require_user
   before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
 
   # GET /todo_lists
   # GET /todo_lists.json
   def index
-    @todo_lists = TodoList.all
+    @todo_lists = current_user.todo_lists
   end
 
   # GET /todo_lists/1
@@ -16,7 +15,7 @@ class TodoListsController < ApplicationController
 
   # GET /todo_lists/new
   def new
-    @todo_list = TodoList.new
+    @todo_list = current_user.todo_lists.new
   end
 
   # GET /todo_lists/1/edit
@@ -31,9 +30,9 @@ class TodoListsController < ApplicationController
     respond_to do |format|
       if @todo_list.save
         format.html { redirect_to @todo_list, notice: 'Todo list was successfully created.' }
-        format.json { render :show, status: :created, location: @todo_list }
+        format.json { render action: 'show', status: :created, location: @todo_list }
       else
-        format.html { render :new }
+        format.html { render action: 'new' }
         format.json { render json: @todo_list.errors, status: :unprocessable_entity }
       end
     end
@@ -45,9 +44,9 @@ class TodoListsController < ApplicationController
     respond_to do |format|
       if @todo_list.update(todo_list_params)
         format.html { redirect_to @todo_list, notice: 'Todo list was successfully updated.' }
-        format.json { render :show, status: :ok, location: @todo_list }
+        format.json { head :no_content }
       else
-        format.html { render :edit }
+        format.html { render action: 'edit' }
         format.json { render json: @todo_list.errors, status: :unprocessable_entity }
       end
     end
@@ -58,7 +57,7 @@ class TodoListsController < ApplicationController
   def destroy
     @todo_list.destroy
     respond_to do |format|
-      format.html { redirect_to todo_lists_url, notice: 'Todo list was successfully destroyed.' }
+      format.html { redirect_to todo_lists_url }
       format.json { head :no_content }
     end
   end
@@ -66,7 +65,7 @@ class TodoListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_todo_list
-      @todo_list = TodoList.find(params[:id])
+      @todo_list = current_user.todo_lists.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
