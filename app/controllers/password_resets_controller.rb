@@ -9,7 +9,6 @@ class PasswordResetsController < ApplicationController
 		user.generate_password_reset_token!
 
 		Notifier.password_reset(user).deliver
-
 		redirect_to login_path
 	end 
 
