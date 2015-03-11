@@ -26,6 +26,10 @@ describe PasswordResetsController do
 				expect{post :create, email: user.email; user.reload}.to change{user.password_reset_token}
 			end 
 
+			it 'sends a password reset email' do
+				expect{post :create, email: user.email}.to change(ActionMailer::Base.deliveries, :size)
+			end 
+
 		end 
 	end
 end
