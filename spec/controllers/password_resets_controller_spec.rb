@@ -53,4 +53,25 @@ describe PasswordResetsController do
 
 		end 
 	end
+
+	describe 'GET edit' do
+
+		context 'with a valid email' do
+			let(:user){create(:user)}
+			before{user.generate_password_reset_token!}
+
+			it 'renders the edit page' do
+				get :edit, id: user.password_reset_token
+				expect(page).to render_template('edit')
+			end
+
+			it 'assigns an @user instance variable' do 
+				get :edit, id: user.password_reset_token
+				expect(assigns(:user)).to eq(user)
+			end
+
+		end
+
+	end 
+
 end
