@@ -56,7 +56,7 @@ describe PasswordResetsController do
 
 	describe 'GET edit' do
 
-		context 'with a valid email' do
+		context 'with a valid password_resets_token' do
 			let(:user){create(:user)}
 			before{user.generate_password_reset_token!}
 
@@ -72,6 +72,65 @@ describe PasswordResetsController do
 
 		end
 
+		context 'with an invalid password_resets_token' do
+
+			it 'renders the 404 page' do
+				get :edit, id: 'notfound' 
+				expect(response.status).to eq(404)
+				expect(response).to render_template(file: "#{Rails.root}/public/404.html")
+			end
+
+		end 
 	end 
 
+	describe 'PATCH updade' do
+
+		context 'with no token found' do
+			it 'renders the edit page' do
+				patch :update, id: 'notfound', user: {password: 'newpassword1', password_confirmation: 'newpassword1'}
+				expect(response).to render_template('edit')
+			end 
+
+			it 'sets the flash message' do 
+				patch :update, id: 'notfound', user: {password: 'newpassword1', password_confirmation: 'newpassword1'}
+				expect(flash[:notice]).to match(/not found/)
+			end 
+
+		end 
+
+
+		context 'with a valid token' do
+			let(:user){create(:user)}
+			before{user.generate_password_reset_token!}
+
+			it 'updates the users password' do
+				digest=user.password_digest
+				patch :update, id: user.password_reset_token, user: {password: 'newpassword1', password_confirmation: 'newpassword1'}
+				user.reload
+				expect(user.password_digest).to_not eq(digest)
+			end 
+
+			it 'clears the password reset token' do
+				patch :update, id: user.password_reset_token, user: {password: 'newpassword1', password_confirmation: 'newpassword1'}
+				user.reload
+				expect(user.password_reset_token).to be_blank
+
+			end 
+
+			it 'logs the user in by setting the session user id' do
+				patch :update, id: user.password_reset_token, user: {password: 'newpassword1', password_confirmation: 'newpassword1'}
+				expect(session[:user_id]).to eq(user.id)
+			end 
+
+			it 'sets the flash[:success] message' do 
+				patch :update, id: user.password_reset_token, user: {password: 'newpassword1', password_confirmation: 'newpassword1'}
+				expect(flash[:success]).to match(/password updated/i)
+			end 
+
+			it 'redirects to the todo lists path' do
+				patch :update, id: user.password_reset_token, user: {password: 'newpassword1', password_confirmation: 'newpassword1'}
+				expect(response).to redirect_to(todo_lists_path)
+			end 
+		end 
+	end 
 end
