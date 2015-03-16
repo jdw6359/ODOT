@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :api do
+    resources :todo_lists
+  end 
+
   root 'todo_lists#index'
 
 
