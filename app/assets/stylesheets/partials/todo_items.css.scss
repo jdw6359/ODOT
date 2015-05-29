@@ -1,0 +1,22 @@
+.checked, .unchecked {
+  background-color: $orange;
+  border-radius: 100%;
+  background-size: 70%;
+}
+
+.checkmark {
+  padding: 0;
+}
+
+.checkmark a {
+  margin-left: 0.9375rem;
+  margin-top: 10px;
+}
+
+.todo-content {
+  margin-top: 6px;
+}
+
+.unchecked {
+  background-image: none;
+}
