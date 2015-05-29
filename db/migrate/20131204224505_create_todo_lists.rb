@@ -4,7 +4,7 @@ class CreateTodoLists < ActiveRecord::Migration
       t.string :title
       t.text :description
 
-      t.timestamps null: false
+      t.timestamps
     end
   end
 end

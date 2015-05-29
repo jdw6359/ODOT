@@ -1,38 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Odot</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <title><%= yield :title %>Odot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "vendor/modernizr" %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
+  <% flash.each do |type, message| %>
+    <div class="flash alert-box text-center <%= type %>">
+      <%= message %>
+      <a href="#" class="close">&times;</a>
+    </div>
+  <% end %>
 
-  <div class="nav">
-    <h1><%= link_to "Odot", root_path %></h1>
-    <ul>
-      <li><%= link_to "Todo Lists", todo_lists_path %></li>
+  <header class="row global-header">
+    <div class="small-12 small-centered medium-8 medium-centered large-5 large-centered columns">
       <% if logged_in? %>
-        <li><%= link_to "Log Out", logout_path, method: :delete %></li>
+        <%= render partial: 'layouts/header_logged_in' %>
       <% else %>
-        <li><%= link_to "Log In", new_user_session_path %></li>
-        <li><%= link_to "Sign Up", new_user_path %></li>
+        <%= render partial: 'layouts/header_logged_out' %>
       <% end %>
-    </ul>
-    <br class="clear" />
+    </div>
+  </header>
+
+  <div class="row collapse">
+    <div class="small-12 small-centered medium-8 medium-centered large-5 large-centered columns">
+      <%= yield %>
+    </div>
   </div>
 
-
-<% flash.each do |type,message| %>
-<div class="alert flash <%= type%>">
-	<%= message %>
-</div>
-<% end %>
-
-<div class="content">
-<%= yield %>
-</div>
+  <footer class="row global-footer">
+    <div class="small-12 small-centered medium-8 medium-centered large-5 large-centered columns text-center">
+      <% if logged_in? %>
+        <%= link_to "Settings", edit_user_path(current_user) %>
+      <% end %>
+    </div>
+  </footer>
 
 </body>
 </html>

@@ -11,35 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311004618) do
+ActiveRecord::Schema.define(version: 20140506192246) do
 
-  create_table "todo_items", force: :cascade do |t|
+  create_table "todo_items", force: true do |t|
     t.integer  "todo_list_id"
     t.string   "content"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "completed_at"
   end
 
   add_index "todo_items", ["todo_list_id"], name: "index_todo_items_on_todo_list_id"
 
-  create_table "todo_lists", force: :cascade do |t|
+  create_table "todo_lists", force: true do |t|
     t.string   "title"
-    t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "user_id"
   end
 
   add_index "todo_lists", ["user_id"], name: "index_todo_lists_on_user_id"
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "password_reset_token"
   end
 

@@ -1,6 +1,7 @@
 class TodoListsController < ApplicationController
   before_action :require_user
   before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_back_link, except: [:index]
 
   # GET /todo_lists
   # GET /todo_lists.json
@@ -63,6 +64,9 @@ class TodoListsController < ApplicationController
   end
 
   private
+    def set_back_link
+      go_back_link_to todo_lists_path
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_todo_list
       @todo_list = current_user.todo_lists.find(params[:id])
@@ -70,6 +74,6 @@ class TodoListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def todo_list_params
-      params.require(:todo_list).permit(:title, :description)
+      params.require(:todo_list).permit(:title)
     end
 end

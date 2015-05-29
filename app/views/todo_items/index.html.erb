@@ -1,33 +1,18 @@
-<h1><%= @todo_list.title %></h1>
+<%= title @todo_list.title %>
 
-<table class="todo_items">
-	<thead>
-		<tr>
-			<th width="25%">Completed?</th>
-			<th width="65%">Content</th>
-			<th width="10%">Functions</th>
-		</tr>
-	</thead>
-	<tbody>
-	<% @todo_list.todo_items.each do |todo_item| %>
-		<tr id="<%= dom_id(todo_item) %>">
-
-			<% if todo_item.completed? %>
-				<td><%= todo_item.completed_at %></td>
-			<% else %>
-				<td><%= link_to "Mark Complete", complete_todo_list_todo_item_path(todo_item), method: :patch %></td>
-			<% end %>
-
-			<td><%= todo_item.content %></td>
-			
-			<td>
-				<%= link_to "Edit", edit_todo_list_todo_item_path(todo_item) %>
-				<%= link_to "Delete", todo_list_todo_item_path(todo_item), method: :delete, 
-				data: {confirm: "Are you sure?"} %>
-			</td>
-		</tr>
-	<% end %>
-</tbody>
-</table>
-
-<p><%= link_to "New Todo Item", new_todo_list_todo_item_path %></p>
+<ul class="list todo-items no-bullet">
+  <% @todo_list.todo_items.each do |todo_item| %>
+  <li id="<%= dom_id(todo_item) %>" class="todo-item row">
+    <div class="small-2 medium-1 columns checkmark">
+      <% if todo_item.completed? %>
+        <%= link_to "Mark Incomplete", complete_todo_list_todo_item_path(@todo_list, todo_item), method: :patch, class: "icon-check checked hide-text" %>
+      <% else %>
+        <%= link_to "Mark Complete", complete_todo_list_todo_item_path(@todo_list, todo_item), method: :patch, class: "icon-check unchecked hide-text" %>
+      <% end %>
+    </div>
+    <div class="small-10 medium-11 columns truncate todo-content" title="<%= todo_item.content %>">
+      <%= link_to todo_item.content, edit_todo_list_todo_item_path(@todo_list, todo_item) %>
+    </div>
+  </li>
+  <% end %>
+</ul>
